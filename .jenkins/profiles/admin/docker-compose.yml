@@ -1,0 +1,25 @@
+services:
+  # Jenkinsfile_admin
+  admin:
+    build:
+      context: ../.. # 프로젝트 루트를 Docker 빌드 컨텍스트로 지정
+      dockerfile: ./.jenkins/profiles/admin/Dockerfile
+    image: admin-test:latest
+    container_name: admin-test
+    hostname: admin
+    restart: always
+    user: root:root # 도커 내 log 파일 접근을 위해 root 권한 필요
+#    volumes:
+      # Jenkinsfile_admin 로그 디렉토리
+#      - /home/ubuntu/apps/Jenkinsfile_admin/logs:/usr/local/Jenkinsfile_admin/logs
+    ports:
+      - "8080:8080"
+    environment:
+      - "TZ=UTC"
+      - "SPRING_PROFILES_ACTIVE=dev,admin"
+      - "SERVER_LOG_PATH=/usr/local/admin/logs"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "100m"

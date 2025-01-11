@@ -1,0 +1,25 @@
+services:
+  # Jenkinsfile_client
+  client:
+    build:
+      context: ../.. # 프로젝트 루트를 Docker 빌드 컨텍스트로 지정
+      dockerfile: ./.jenkins/profiles/client/Dockerfile
+    image: client-test:latest
+    container_name: client-test
+    hostname: client
+    restart: always
+    user: root:root # 도커 내 log 파일 접근을 위해 root 권한 필요
+#    volumes:
+      # Jenkinsfile_client 로그 디렉토리
+#      - /home/ubuntu/apps/Jenkinsfile_client/logs:/usr/local/Jenkinsfile_client/logs
+    ports:
+      - "8081:8081"
+    environment:
+      - "TZ=UTC"
+      - "SPRING_PROFILES_ACTIVE=dev,client"
+      - "SERVER_LOG_PATH=/usr/local/client/logs"
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "100m"
