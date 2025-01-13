@@ -42,7 +42,7 @@ pipeline {
                         mkdir -p ${TARGET_PATH} &&
                         echo "Pulling Docker Compose setup..." &&
                         cd ${TARGET_PATH} &&
-                        echo "${DOCKER_COMPOSE_FILE}" > docker-compose.yml &&
+                        cp ${WORKSPACE}/.jenkins/profiles/client/docker-compose.yml ./docker-compose.yml &&
                         docker-compose down &&
                         docker-compose up -d
                     '
