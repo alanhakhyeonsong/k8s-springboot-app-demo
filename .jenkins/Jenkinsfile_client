@@ -38,11 +38,9 @@ pipeline {
             steps {
                 echo "Deploying application on the target server..."
                 sh """
+                    cat ${WORKSPACE}/.jenkins/profiles/client/docker-compose.yml | ssh ${TARGET_USER}@${TARGET_SERVER} 'mkdir -p ${TARGET_PATH} && cat > ${TARGET_PATH}/docker-compose.yml' &&
                     ssh ${TARGET_USER}@${TARGET_SERVER} '
-                        mkdir -p ${TARGET_PATH} &&
-                        echo "Pulling Docker Compose setup..." &&
                         cd ${TARGET_PATH} &&
-                        cp ${WORKSPACE}/.jenkins/profiles/client/docker-compose.yml ./docker-compose.yml &&
                         docker-compose down &&
                         docker-compose up -d
                     '
